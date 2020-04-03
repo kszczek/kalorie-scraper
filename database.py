@@ -1,4 +1,5 @@
 import sqlite3
+import logging
 
 
 class Database:
@@ -6,6 +7,7 @@ class Database:
         self.db = sqlite3.connect(path)
 
     def insert_ingredient(self, ingredient):
+        logging.info('Inserting ingredient {}'.format(ingredient.name))
         query = ('INSERT INTO nutrition_ingredient (license_author, status, creation_date, update_date, '
                  'name, energy, protein, carbohydrates, carbohydrates_sugar, fat, fat_saturated, fibres, '
                  'sodium, language_id, license_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
