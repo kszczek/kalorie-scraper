@@ -4,8 +4,8 @@ from ingredient import Ingredient
 from ingredient_weight_unit import IngredientWeightUnit
 from weight_unit import WeightUnit
 from datetime import datetime
+from time import sleep
 import re
-import logging
 
 
 class Scraper:
@@ -27,15 +27,17 @@ class Scraper:
                 float(tds[2].text.replace(',', '.')),
                 float(tds[3].text.replace(',', '.')),
                 float(tds[4].text.replace(',', '.')),
-                self.get_ingredient_weight_units(self.BASE_URL + tds[0].find('a')['href'])
+                self.BASE_URL + tds[0].find('a')['href']
             ))
-            logging.info('Parsed ingredient {}'.format(tds[0].text.strip()))
         return ingredients
 
-    def get_ingredient_weight_units(self, url):
-        response = simple_get(url)
+    def get_ingredient_weight_units(self, ingredient):
+        response = simple_get(ingredient.details_url)
         soup = BeautifulSoup(response, 'html.parser')
-        root = soup.find_all('ul', class_='suggestions')[1]
+        uls = soup.find_all('ul', class_='suggestions')
+        if not len(uls) == 3:
+            return None
+        root = uls[1]
         ingredient_weight_units = []
         for li in root.find_all('li'):
             weight_unit = IngredientWeightUnit(
@@ -43,8 +45,13 @@ class Scraper:
                 1,
                 WeightUnit(li.find('strong').text.lower())
             )
+            weight_unit.ingredient_id = ingredient.id
             ingredient_weight_units.append(weight_unit)
         return ingredient_weight_units
 
     def get_page(self, page):
-        return simple_get(self.PAGE_URL.format(page))
+        response = simple_get(self.PAGE_URL.format(page))
+        while response == None:
+            sleep(3)
+            simple_get(self.PAGE_URL.format(page))
+        return response

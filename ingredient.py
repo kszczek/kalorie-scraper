@@ -12,7 +12,8 @@ class Ingredient:
     protein: float
     carbohydrates: float
     fat: float
-    weight_units: list
+    details_url: str
+    id: int = -1
     license_author: str = 'wger.floss'
     status: str = '2'
     carbohydrates_sugar: float = 0

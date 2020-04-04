@@ -12,8 +12,8 @@ def simple_get(url):
             else:
                 return None
     except RequestException as e:
-        logging.info('GET request to {} failed'.format(url))
-        logging.exception(e)
+        logging.info('GET request to {} failed: {}'.format(url, e.strerror))
+        return None
 
 
 def is_html(response):
