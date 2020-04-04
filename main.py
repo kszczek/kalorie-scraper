@@ -14,6 +14,7 @@ def scraper_worker():
     scraper = Scraper()
     page = 1
     while True:
+        logging.info('Parsing page {}'.format(page))
         ingredients = scraper.get_ingredients(page)
         if len(ingredients) == 0:
             break
@@ -36,6 +37,7 @@ def database_worker(path):
         lock.release()
         if not queue.empty():
             db.insert_ingredient(queue.get(False))
+    db.close()
 
 
 if __name__ == '__main__':

@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from ingredient_weight_unit import IngredientWeightUnit
 
 
 # -1 means NULL
@@ -11,6 +12,7 @@ class Ingredient:
     protein: float
     carbohydrates: float
     fat: float
+    weight_units: list
     license_author: str = 'wger.floss'
     status: str = '2'
     carbohydrates_sugar: float = 0
