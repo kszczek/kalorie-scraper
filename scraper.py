@@ -33,6 +33,8 @@ class Scraper:
 
     def get_ingredient_weight_units(self, ingredient):
         response = simple_get(ingredient.details_url)
+        if response == None:
+            return None
         soup = BeautifulSoup(response, 'html.parser')
         uls = soup.find_all('ul', class_='suggestions')
         if not len(uls) == 3:

@@ -62,6 +62,7 @@ class Database:
                 break
         if not found:
             ingredient_weight_unit.unit_id = self.insert_weight_unit(ingredient_weight_unit.weight_unit)
+        logging.info('Inserting ingredient weight unit {}, {}'.format(ingredient_weight_unit.unit_id, ingredient_weight_unit.ingredient_id))
         query = 'INSERT INTO nutrition_ingredientweightunit (gram, amount, ingredient_id, unit_id) VALUES (?, ?, ?, ?)'
         cursor = self.db.cursor()
         cursor.execute(query, (ingredient_weight_unit.gram, ingredient_weight_unit.amount,

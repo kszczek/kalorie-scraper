@@ -37,6 +37,8 @@ def ingredient_units_worker():
             break
         lock.release()
         units = scraper.get_ingredient_weight_units(ingredient_units_queue.get())
+        if units == None:
+            continue
         for unit in units:
             units_queue.put(unit)
     lock.acquire()
